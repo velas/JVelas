@@ -72,4 +72,11 @@ public class Helpers {
         return DigestUtils.sha256(DigestUtils.sha256(data));
     }
 
+    public static byte[] concat(byte[] a, byte[] b) {
+        byte[] dest = new byte[a.length + b.length];
+        System.arraycopy(a, 0, dest, 0, a.length);
+        System.arraycopy(b, 0, dest, a.length, b.length);
+        return dest;
+    }
+
 }

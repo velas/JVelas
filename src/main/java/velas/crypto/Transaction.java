@@ -2,7 +2,6 @@ package velas.crypto;
 
 import com.google.bitcoin.core.Base58;
 import org.apache.commons.codec.binary.Hex;
-import org.apache.tuweni.crypto.sodium.Signature;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -49,7 +48,7 @@ public class Transaction extends TransactionModel {
 
         for (TransactionInputOutpoint prevOut: unspents) {
             byte[] sigMsg = this.msgForSign(prevOut.hash, prevOut.index);
-            byte[] sig = Signature.signDetached(sigMsg, Signature.SecretKey.fromBytes(keys.secretKey()));
+            byte[] sig = Crypto.Sign(keys.cryptoKeys(), sigMsg);
             txIns.add(new TransactionInput(Hex.encodeHexString(sig), keys.publicKey(), prevOut));
         }
 
@@ -94,7 +93,7 @@ public class Transaction extends TransactionModel {
 
         for (TransactionInputOutpoint prevOut: unspents) {
             byte[] sigMsg = this.msgForSign(prevOut.hash, prevOut.index);
-            byte[] sig = Signature.signDetached(sigMsg, Signature.SecretKey.fromBytes(keys.secretKey()));
+            byte[] sig = Crypto.Sign(keys.cryptoKeys(), sigMsg);
             txIns.add(new TransactionInput(Hex.encodeHexString(sig), keys.publicKey(), prevOut));
         }
 

@@ -2,7 +2,6 @@ package velas.crypto;
 
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
-import org.apache.tuweni.crypto.sodium.Signature;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -23,16 +22,16 @@ public class HD {
     public final static String DefaultDerivePath = "m/0'";
     private static final String HMAC_SHA512 = "HmacSHA512";
 
-    private Signature.KeyPair keyPair;
+    private CryptoKeys keyPair;
 
-    public HD() {
-        this.keyPair = Signature.KeyPair.random();
+    public HD() throws NoSuchAlgorithmException {
+        this.keyPair = Crypto.generateKeys();
     }
 
     // HD from private key
     public HD(String sk) throws DecoderException {
         byte[] skBuf = Hex.decodeHex(sk.toCharArray());
-        this.keyPair = Signature.KeyPair.forSecretKey(Signature.SecretKey.fromBytes(skBuf));
+        this.keyPair = Crypto.generateFromSk(skBuf);
     }
 
     // HD from seed
@@ -43,19 +42,25 @@ public class HD {
         }
         MasterKey mk = HD.derivePath(path, seed);
 
-        this.keyPair = Signature.KeyPair.fromSeed(Signature.Seed.fromBytes(mk.key));
+        System.out.println("=====================");
+        System.out.println(Hex.encodeHex(mk.key));
+        this.keyPair = Crypto.generateFromSeed(mk.key);
     }
 
     public byte[] publicKey() {
-        return this.keyPair.publicKey().bytesArray();
+        return this.keyPair.publicKey;
     }
 
     public byte[] secretKey() {
-        return this.keyPair.secretKey().bytesArray();
+        return this.keyPair.secretKey;
+    }
+
+    public CryptoKeys cryptoKeys() {
+        return this.keyPair;
     }
 
     public Wallet toWallet() throws IOException {
-        return new Wallet(this.keyPair.publicKey().bytesArray());
+        return new Wallet(this.keyPair.publicKey);
     }
 
     public static MasterKey derivePath(String path, byte[] seed) throws Exception {

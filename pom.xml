@@ -6,7 +6,7 @@
 
     <groupId>com.velas</groupId>
     <artifactId>jvelas</artifactId>
-    <version>0.1.0</version>
+    <version>0.1.2</version>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -14,6 +14,12 @@
     </properties>
 
     <dependencies>
+
+        <dependency>
+            <groupId>net.i2p.crypto</groupId>
+            <artifactId>eddsa</artifactId>
+            <version>0.3.0</version>
+        </dependency>
 
         <dependency>
             <groupId>com.konghq</groupId>
@@ -25,12 +31,6 @@
             <groupId>com.google</groupId>
             <artifactId>bitcoinj</artifactId>
             <version>0.11.1</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.tuweni</groupId>
-            <artifactId>tuweni-crypto</artifactId>
-            <version>0.10.0</version>
         </dependency>
 
         <dependency>
