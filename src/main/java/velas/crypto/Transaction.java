@@ -34,11 +34,13 @@ public class Transaction extends TransactionModel {
 
         // Commission
         this.txOuts = new ArrayList<TransactionOut>();
-        txOuts.add(new TransactionOut(index++, commission, ""));
+        txOuts.add(new TransactionOut(index, commission, ""));
+        index += 1;
 
         // Dest address
         String to = Hex.encodeHexString(Base58.decode(toAddress));
-        txOuts.add(new TransactionOut(index++, amount, to));
+        txOuts.add(new TransactionOut(index, amount, to));
+        index += 1;
 
         BigInteger change = totalin.subtract(amount).subtract(commission);
         if (change.compareTo(zero) > 0) {
@@ -74,14 +76,15 @@ public class Transaction extends TransactionModel {
 
         // Commission
         this.txOuts = new ArrayList<TransactionOut>();
-        txOuts.add(new TransactionOut(index++, commission, ""));
+        txOuts.add(new TransactionOut(index, commission, ""));
+        index += 1;
 
         // receivers
         for (Receiver rec: receivers) {
             totalout = totalout.add(rec.amount);
-            index++;
             String to = Hex.encodeHexString(Base58.decode(rec.wallet));
             txOuts.add(new TransactionOut(index, rec.amount, to));
+            index +=1;
         }
 
 
